@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginWithEmail, signInWithProvider } from "../services/authService";
 import { useAuth } from "../context/AuthContext"; // ⬅️ make sure this exists
+import { useLogin } from "../features/auth/api/use-login";
 
 // Regex for email and password validation
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,6 +13,7 @@ const passwordRegex =
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth(); // ⬅️ comes from AuthContext
+  const { mutate, isPending } = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,25 +47,37 @@ export default function Login() {
     return ok;
   };
 
+  // const handleLogin = async () => {
+  //   if (!validate()) return;
+
+  //   const res = await loginWithEmail(email.trim(), password);
+
+  //   if (!res.ok) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       password: res.error || "Incorrect email or password.",
+  //     }));
+  //     return;
+  //   }
+
+  //   if (res.user && typeof login === "function") {
+  //     // put full user (with fullName, phone, etc.) into AuthContext
+  //     login(res.user);
+  //   }
+
+  //   navigate("/"); // HomePage
+  // };
+
+
   const handleLogin = async () => {
     if (!validate()) return;
 
-    const res = await loginWithEmail(email.trim(), password);
-
-    if (!res.ok) {
-      setErrors((prev) => ({
-        ...prev,
-        password: res.error || "Incorrect email or password.",
-      }));
-      return;
+    const payload = {
+      email,
+      password
     }
 
-    if (res.user && typeof login === "function") {
-      // put full user (with fullName, phone, etc.) into AuthContext
-      login(res.user);
-    }
-
-    navigate("/"); // HomePage
+    mutate(payload);
   };
 
   const handleProviderClick = async (provider) => {
@@ -141,7 +155,7 @@ export default function Login() {
           {errors.password && (
             <p className="text-xs text-red-500 flex items-center gap-1">
               <span className="h-2 w-2 rounded-full bg-red-500" />
-              {errors.password}
+              <span className="flex-1">{errors.password}</span>
             </p>
           )}
         </div>
@@ -161,9 +175,10 @@ export default function Login() {
         <button
           type="button"
           onClick={handleLogin}
-          className="mt-6 w-full rounded-full bg-lime-500 py-3 text-sm font-semibold text-black active:scale-[0.99]"
+          disabled={isPending}
+          className="mt-6 w-full rounded-full bg-lime-500 py-3 text-sm font-semibold text-black active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
-          Login
+          {isPending ? "Logging in..." : "Login"}
         </button>
 
         {/* Sign up link */}

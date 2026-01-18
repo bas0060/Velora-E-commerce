@@ -6,19 +6,23 @@ import Footer from "./component/Footer";
 import LatestOffers from "./component/LatestOffers";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/react-query";
 
 const AppWrapper = () => {
   return (
-    <AuthProvider>
-      <FavoritesProvider>
-        <CartProvider>
-          <Navbar />  
-          <Outlet />
-          <LatestOffers/>
-          <Footer/>
-        </CartProvider>
-      </FavoritesProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <FavoritesProvider>
+          <CartProvider>
+            <Navbar />  
+            <Outlet />
+            <LatestOffers/>
+            <Footer/>
+          </CartProvider>
+        </FavoritesProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 
