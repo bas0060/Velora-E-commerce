@@ -7,14 +7,34 @@ import {
   signInWithProvider,
   requestOtp,
 } from "../services/authService";
+import { useRegister } from "../features/auth/api/use-register";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function CreateAccount() {
+  const { mutate, isPending } = useRegister();
+  
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");
+
+  // const handleCreateAccount = async () => {
+  //   if (!emailRegex.test(email.trim())) {
+  //     setError("invalid mail, try again");
+  //     return;
+  //   }
+  //   if (!agree) {
+  //     setError("Please agree to the Terms and conditions");
+  //     return;
+  //   }
+
+  //   setError("");
+
+  //   await signUpWithEmail(email.trim());
+  //   await requestOtp(email.trim());
+  //   navigate("/verify-email");
+  // };
 
   const handleCreateAccount = async () => {
     if (!emailRegex.test(email.trim())) {
@@ -28,9 +48,20 @@ export default function CreateAccount() {
 
     setError("");
 
-    await signUpWithEmail(email.trim());
-    await requestOtp(email.trim());
-    navigate("/verify-email");
+    const payload = {
+      // userName,
+      // email,
+      // password
+    };
+
+    mutate(payload, {
+      onSuccess: (variables) => {
+      // Redirect to verification page, passing the email in 'state'
+      navigate("/verify-email", { 
+        state: { email: variables.email } 
+      });
+    },
+    })
   };
 
   const handleProviderClick = async (provider) => {
