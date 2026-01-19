@@ -16,13 +16,14 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
 import ResetPassword from './pages/ResetPassword';
+import ProtectedRoute from './routes/protected-route';
 
 
 const App = () => {
   return (
     <Routes>
       <Route element={<AppWrapper />}>
-        <Route path="/create-account" element={<CreateAccount />} />
+        {/* <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signup-success" element={<SignUpSuccess />} />
         <Route path='/verify-email' element={<VerifyEmail />} />
@@ -36,7 +37,27 @@ const App = () => {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/carts" element={<CartsPage />} />
+        <Route path="/product/:productId" element={<ProductDetailPage />} /> */}
+
+        {/* --- PUBLIC ROUTES --- */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/blogs" element={<BlogsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/product/:productId" element={<ProductDetailPage />} />
+
+        {/* --- AUTH ROUTES (Only for logged out users) --- */}
+        <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path='/verify-email' element={<VerifyEmail />} />
+
+        {/* --- PROTECTED ROUTES (Logged in only) --- */}
+        <Route element={<ProtectedRoute />}>
+           {/* Future routes like /profile or /transaction-history go here */}
+        </Route>
+        
+
       </Route>
     </Routes>
   )

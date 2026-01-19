@@ -10,6 +10,7 @@ import { Link, useLocation } from "react-router-dom"; // ⬅️ added useLocatio
 import { useFavorites } from "../context/FavoritesContext";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext"; // Import useAuth for managing login state
+import { useGetUserProfile } from "../api/use-get-user-data";
 
 const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -20,6 +21,10 @@ const Navbar = () => {
   const location = useLocation(); // ⬅️ current route
   const isFavoritesActive = location.pathname.startsWith("/favorites");
   const isCartActive = location.pathname.startsWith("/carts");
+
+  const { data: userProfile } = useGetUserProfile();
+
+  console.log("user profile data", userProfile);
 
   return (
     <nav className="bg-[#F8F8F8] md:py-10">
