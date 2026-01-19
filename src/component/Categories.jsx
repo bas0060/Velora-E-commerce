@@ -18,7 +18,7 @@ const Categories = () => {
     const update = () => {
       const w = window.innerWidth;
       if (w < 640) setVisibleCount(1);
-      else if (w < 1024) setVisibleCount(2);
+      else if (w < 1024) setVisibleCount(1);
       else setVisibleCount(3);
     };
     update();
@@ -84,7 +84,7 @@ const Categories = () => {
           />
 
           {/* EVERYTHING BELOW THIS LINE REMAINS EXACTLY AS YOUR ORIGINAL CODE */}
-          <div className="w-full md:w-[70%] relative">
+          <div className="w-full md:w-[55%] lg:w-[80%] relative">
             {needCarousel && (
               <div>
                 <button
@@ -115,7 +115,7 @@ const Categories = () => {
             ) : (
               <div
                 ref={containerRef}
-                className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth py-3"
+                className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth py-3"
               >
                 {filteredProducts.map((product) => (
                   <div

@@ -24,19 +24,21 @@ const Navbar = () => {
   return (
     <nav className="bg-[#F8F8F8] md:py-10">
       <div className="hidden w-[90%] justify-between md:flex items-center m-auto">
-        <div className="flex items-center gap-x-2">
-          <div className="bg-[#A1C249] p-[.27rem] rounded-[.57rem]">
-            <img src={logo} alt="logo" className="w-auto aspect-square" />
+        <Link to="/">
+          <div className="flex items-center gap-x-2">
+            <div className="bg-[#A1C249] p-[.27rem] rounded-[.57rem]">
+              <img src={logo} alt="logo" className="w-auto aspect-square" />
+            </div>
+            <div className="flex flex-col gap-y-1">
+              <h2 className="leading-[100%] font-medium md:font-bold text-[2.25rem] md:text-[2.25rem]">
+                Velora.
+              </h2>
+              <p className="leading-[100%] font-normal text-[.5rem] ">
+                Think forward, Spend Smarter
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col gap-y-1">
-            <h2 className="leading-[100%] font-medium md:font-bold text-[2.25rem] md:text-[2.25rem]">
-              Velora.
-            </h2>
-            <p className="leading-[100%] font-normal text-[.5rem] ">
-              Think forward, Spend Smarter
-            </p>
-          </div>
-        </div>
+        </Link>
 
         <LinkNav />
 
