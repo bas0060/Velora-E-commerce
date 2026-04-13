@@ -20,19 +20,21 @@ export const FavoritesProvider = ({ children }) => {
   }, [favorites]);
 
   const toggleFavorite = (product) => {
-    const exists = favorites.some((p) => p.id === product.id);
-    if (exists) {
-      setFavorites((s) => s.filter((p) => p.id !== product.id));
-      toast.info(`${product.name} removed from favorites`);
-      return { added: false };
-    } else {
-      setFavorites((s) => [...s, product]);
-      toast.success(`${product.name} added to favorites`);
-      return { added: true };
-    }
-  };
+  const normalizedProduct = { ...product, id: product.id || product._id };
+  const exists = favorites.some((p) => p.id === normalizedProduct.id);
 
-  const isFavorited = (id) => favorites.some((p) => p.id === id);
+  if (exists) {
+    setFavorites((s) => s.filter((p) => p.id !== normalizedProduct.id));
+    toast.info(`${normalizedProduct.name} removed from favorites`);
+    return { added: false };
+  } else {
+    setFavorites((s) => [...s, normalizedProduct]);
+    toast.success(`${normalizedProduct.name} added to favorites`);
+    return { added: true };
+  }
+};
+
+const isFavorited = (id) => favorites.some((p) => p.id === id || p._id === id);
 
   return (
     <FavoritesContext.Provider

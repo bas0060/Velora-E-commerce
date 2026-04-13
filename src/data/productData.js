@@ -136,7 +136,7 @@ const productData = [
     isTopProduct: true,
     colors: ["Black", "White", "blue"],
     sizes: ["40","41","42", "43", "44", "45",],
-    isJustForYou: true,
+    isJustForYou: true, 
     reviews: 200,
     inStock: true,
     description: "Step into effortless style with these men’s casual slip-on shoes. Designed with a sleek grey fabric upper, cushioned insole, and sturdy white sole, they offer all-day comfort and a clean, modern look—perfect for everyday wear.",

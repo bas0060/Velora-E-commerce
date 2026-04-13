@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation } from "react-router-dom";
-import { API } from "@/lib/axios";
+import { API } from "../../../lib/axios";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export const useLogin = () => {
   const location = useLocation();
 
   // Where the user came from, or the home page
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/dashboard";
 
   return useMutation({
     mutationFn: async (payload) => {

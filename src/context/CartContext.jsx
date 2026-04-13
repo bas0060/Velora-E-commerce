@@ -21,17 +21,18 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   const addToCart = (product) => {
-    const exists = cart.some((p) => p.id === product.id);
-    if (exists) {
-      // If product is already in the cart, remove it
-      setCart((prev) => prev.filter((item) => item.id !== product.id)); 
-      toast.info(`${product.name} removed from cart`);
-    } else {
-      // Add new product to cart with quantity 1 if not in the cart
-      setCart((prev) => [...prev, { ...product, quantity: 1 }]);
-      toast.success(`${product.name} added to cart`);
-    }
-  };
+  // Normalize: support both _id (MongoDB) and id
+  const normalizedProduct = { ...product, id: product.id || product._id };
+  const exists = cart.some((p) => p.id === normalizedProduct.id);
+
+  if (exists) {
+    setCart((prev) => prev.filter((item) => item.id !== normalizedProduct.id));
+    toast.info(`${normalizedProduct.name} removed from cart`);
+  } else {
+    setCart((prev) => [...prev, { ...normalizedProduct, quantity: 1 }]);
+    toast.success(`${normalizedProduct.name} added to cart`);
+  }
+};
 
   // Update quantity (increase/decrease)
   const updateCartQuantity = (productId, action) => {

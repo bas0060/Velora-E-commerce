@@ -1,28 +1,17 @@
 import React from "react";
-import { FavoritesProvider } from "./context/FavoritesContext";
 import { Outlet } from "react-router-dom";
-import Navbar from "./component/Navbar";
-import Footer from "./component/Footer";
-import LatestOffers from "./component/LatestOffers";
-import { CartProvider } from "./context/CartContext";
-import { AuthProvider } from "./context/AuthContext";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/react-query";
+import Navbar from "@/modules/home/components/Navbar";
+import Footer from "@/modules/home/components/Footer";
+import LatestOffers from "@/modules/home/components/LatestOffers";
 
 const AppWrapper = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <FavoritesProvider>
-          <CartProvider>
-            <Navbar />  
-            <Outlet />
-            <LatestOffers/>
-            <Footer/>
-          </CartProvider>
-        </FavoritesProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <>
+      <Navbar />
+      <Outlet />
+      <LatestOffers />
+      <Footer />
+    </>
   );
 };
 
