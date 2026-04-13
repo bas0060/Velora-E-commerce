@@ -1,13 +1,12 @@
 import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import useVerifyPayment from "../api/use-verify-payment"; // adjust path
-import { CircleCheck, CircleX, Mail, Phone } from "lucide-react";
+import { CircleCheck, CircleX, Mail, Phone } from "lucide-react"; // Importing a spinner from lucide-react
 import BackButton from "@/modules/home/components/ui/BackButton";
 
 const currency = (n) =>
   `₦${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 
-// Paystack appends ?reference=xxx&trxref=xxx to your callback URL
 const OrderConfirmationPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -17,7 +16,6 @@ const OrderConfirmationPage = () => {
   const { data, isLoading, isError } = useVerifyPayment(reference);
 
   const order = data?.order;
-
 
   if (isLoading) {
     return (
@@ -29,7 +27,6 @@ const OrderConfirmationPage = () => {
     );
   }
 
-  
   if (isError || !order) {
     return (
       <div className="p-10 text-center space-y-4">
@@ -54,15 +51,12 @@ const OrderConfirmationPage = () => {
   const shipping = order.shippingAddress || {};
 
   return (
-    <div className="p-6 md:p-8 lg:p-8">
-        <div className="pb-4">
-            <BackButton/>
-        </div>
+    <div className="py-4 md:p-8 lg:p-8">
+      <div className="pb-4">
+        <BackButton onClick={() => navigate("/orders")} /> {/* Back Button to /orders */}
+      </div>
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10">
-
-        
         <div className="space-y-8">
-
           {/* HEADER */}
           <div className="flex gap-4 items-center">
             <CircleCheck strokeWidth={1} className="w-16 h-16 text-[#A1C249]" />
@@ -94,7 +88,6 @@ const OrderConfirmationPage = () => {
           <div>
             <h3 className="font-semibold mb-3">Order details</h3>
             <div className="border rounded-xl p-6 space-y-4 text-sm">
-
               {/* SHIPPING */}
               <div>
                 <p className="font-medium mb-1">Shipping address</p>
@@ -144,10 +137,8 @@ const OrderConfirmationPage = () => {
           </div>
         </div>
 
-
         <div className="border-l pl-6 space-y-6">
           <h3 className="font-semibold">Order summary</h3>
-
           {/* ITEMS */}
           <div className="space-y-4">
             {order.orderItems?.map((item, index) => (
@@ -170,13 +161,12 @@ const OrderConfirmationPage = () => {
 
           {/* TOTALS */}
           <div className="space-y-2 text-sm">
-            <Row label="Subtotal"  value={currency(order.itemsPrice)} />
-            <Row label="Shipping"  value={currency(order.shippingPrice)} />
-            <Row label="Tax"       value={currency(order.taxPrice)} />
-            <Row label="Total"     value={currency(order.totalPrice)} bold />
+            <Row label="Subtotal" value={currency(order.itemsPrice)} />
+            <Row label="Shipping" value={currency(order.shippingPrice)} />
+            <Row label="Tax" value={currency(order.taxPrice)} />
+            <Row label="Total" value={currency(order.totalPrice)} bold />
           </div>
         </div>
-
       </div>
     </div>
   );

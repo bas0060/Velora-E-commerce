@@ -10,6 +10,7 @@ import storeLogo from "@/assets/images/storeLogo.svg";
 import BackButton from "@/modules/home/components/ui/BackButton";
 import verifiedIcon from "@/assets/icons/verifiedIcon.svg";
 import followingIcon from "@/assets/icons/followingIcon.svg";
+import ProductDetailSkeleton from "../components/loaders/ProductDetailSkeleton";
 
 function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState("");
@@ -32,7 +33,7 @@ function ProductDetailPage() {
     }
   }, [product]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ProductDetailSkeleton />;
   if (error || !product) return <div>Product not found</div>;
 
   const handleAddToCart = () => {

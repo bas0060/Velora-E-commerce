@@ -1,6 +1,7 @@
 // src/components/ProtectedRoute.jsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { Loader } from 'lucide-react';
 
 const ProtectedRoute = () => {
   const { user, isLoading } = useAuth(); // reuses the already-running query — no extra fetch
@@ -9,7 +10,10 @@ const ProtectedRoute = () => {
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <p>Loading session...</p>
+        {/* Technical Spinner for Loading */}
+        <div className="flex justify-center items-center">
+          <Loader className="w-16 h-16 text-[#A1C249] animate-spin" />
+        </div>
       </div>
     );
   }
