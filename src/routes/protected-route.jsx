@@ -1,25 +1,23 @@
+// src/components/ProtectedRoute.jsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useVerifyAuth } from '../features/auth/api/use-verify-auth';
+import { useAuth } from '@/context/AuthContext';
 
 const ProtectedRoute = () => {
-  const { data: user, isLoading } = useVerifyAuth();
+  const { user, isLoading } = useAuth(); // reuses the already-running query — no extra fetch
   const location = useLocation();
 
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        {/* Replace with your actual Spinner component */}
         <p>Loading session...</p>
       </div>
     );
   }
 
-  // If no user, redirect to login but save the current location
-  // so we can redirect them back after they log in.
   return user ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/create-account" state={{ from: location }} replace />
   );
 };
 

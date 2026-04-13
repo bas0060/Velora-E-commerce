@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { API } from "../../../lib/axios";
 
 export const useVerifyOtp = () => {
   const queryClient = useQueryClient();
