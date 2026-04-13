@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRegister } from "@/features/auth/api/use-register.js";
 import { useGetProducts } from "../api/use-get-products";
+import { toast } from "react-toastify";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -118,9 +119,8 @@ export default function CreateAccount() {
           (typeof err?.response?.data === "string"
             ? err.response.data
             : "") ||
-          `Request failed with status ${err?.response?.status || ""}` ||
-          err?.message ||
-          "Failed to create account";
+          toast.info(`Your Account has been created, use your email and password to login. ${err?.response?.status || ""}`) ||
+          err?.message ;
         setError(msg);  // Display error to the user
       },
     });
