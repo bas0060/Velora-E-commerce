@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useRegister } from "@/features/auth/api/use-register.js";
 import { useGetProducts } from "../api/use-get-products";
-import { toast } from "react-toastify";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -29,6 +29,8 @@ export default function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const registerToastTimer = useRef(null);
+
   // `error` is for general / top-level error (email, API, terms)
   const [error, setError] = useState("");
 
@@ -46,8 +48,20 @@ export default function CreateAccount() {
   const inputNormal = "border-gray-300 focus:border-lime-500";
   const inputError = "border-red-500 focus:border-red-500";
 
+  useEffect(() => {
+    return () => {
+      if (registerToastTimer.current) {
+        clearTimeout(registerToastTimer.current);
+      }
+    };
+  }, []);
+
   const handleCreateAccount = () => {
     // reset field-level errors
+    if (registerToastTimer.current) {
+      clearTimeout(registerToastTimer.current);
+    }
+
     const newErrors = {
       userName: "",
       password: "",
@@ -104,14 +118,27 @@ export default function CreateAccount() {
 
     console.log("Sending payload to API:", payload);  // Debugging log
 
+    registerToastTimer.current = window.setTimeout(() => {
+      toast.info(
+        "Your account has been created. You can click login and use the email and password.",
+        { autoClose: 4000 }
+      );
+    }, 12000);
+
     // Call the backend API
     mutate(payload, {
       onSuccess: () => {
-        // On successful registration, navigate to email verification page
+        if (registerToastTimer.current) {
+          clearTimeout(registerToastTimer.current);
+          registerToastTimer.current = null;
+        }
         navigate("/verify-email", { state: { email: email.trim() } });
       },
       onError: (err) => {
-        // Improved error logging
+        if (registerToastTimer.current) {
+          clearTimeout(registerToastTimer.current);
+          registerToastTimer.current = null;
+        }
         console.log("Register error:", err);
         const msg =
           err?.response?.data?.message ||
@@ -119,8 +146,9 @@ export default function CreateAccount() {
           (typeof err?.response?.data === "string"
             ? err.response.data
             : "") ||
-          toast.info(`Your Account has been created, use your email and password to login. ${err?.response?.status || ""}`) ||
-          err?.message ;
+          `Request failed with status ${err?.response?.status || ""}` ||
+          err?.message ||
+          "Failed to create account";
         setError(msg);  // Display error to the user
       },
     });
