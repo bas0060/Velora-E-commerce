@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CategoryButtons from "./CategoryButtons";
 import ProductCard from "@/modules/home/components/ProductCard";
@@ -6,19 +6,23 @@ import chevLeft from "@/assets/icons/chevronLeft.svg";
 import chevRight from "@/assets/icons/chevronRight.svg";
 import { useGetCategories } from "../api/use-get-categories";
 import { useGetProducts } from "../api/use-get-products";
+import { useLazySectionLoad } from "@/lib/useLazySectionLoad";
+import { SkeletonLoader } from "@/components/Loading";
 
 const Categories = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [visibleCount, setVisibleCount] = useState(3);
   const containerRef = useRef(null);
   const navigate = useNavigate();
+  const [sectionRef, shouldLoad] = useLazySectionLoad({ rootMargin: '300px', threshold: 0.15 });
 
-  const filters = {
-    category: selectedCategoryId,
-  };
+  const filters = useMemo(
+    () => ({ category: selectedCategoryId }),
+    [selectedCategoryId]
+  );
 
-  const { data: categories } = useGetCategories();
-  const { data: products } = useGetProducts(filters);
+  const { data: categories } = useGetCategories({ enabled: shouldLoad });
+  const { data: products } = useGetProducts(filters, { enabled: shouldLoad });
 
   // Normalise products into a simple array
   const items = products?.documents || [];
@@ -90,7 +94,7 @@ const Categories = () => {
             />
           </div>
 
-          <div className="w-full md:w-[55%] lg:w-[75%] relative">
+          <div ref={sectionRef} className="w-full md:w-[55%] lg:w-[75%] relative">
             {needCarousel && (
               <div className="flex">
                 <button
@@ -98,20 +102,23 @@ const Categories = () => {
                   className="absolute cursor-pointer -top-8 right-16 -translate-y-1/2 z-20 bg-white text-3xl py-4 px-5 rounded-full shadow"
                   aria-label="scroll left"
                 >
-                  <img src={chevLeft} alt="chevLeft" />
+                  <img src={chevLeft} alt="Previous products" />
                 </button>
                 <button
                   onClick={scrollByOne}
                   className="absolute cursor-pointer right-0 -top-8 -translate-y-1/2 z-20 bg-white py-4 px-5 rounded-full shadow"
                   aria-label="scroll right"
                 >
-                  <img src={chevRight} alt="chevRight" />
+                  <img src={chevRight} alt="Next products" />
                 </button>
               </div>
             )}
 
-            {!needCarousel ? (
-              // No carousel needed: still show a single row, respecting visibleCount
+            {!shouldLoad ? (
+              <div className="py-10">
+                <SkeletonLoader lines={5} className="w-full" />
+              </div>
+            ) : !needCarousel ? (
               <div className="flex gap-x-10 w-full">
                 {items.map((product) => (
                   <div
