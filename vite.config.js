@@ -16,4 +16,51 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src")
     },
   },
+  build: {
+    // Enable code splitting for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': [
+            'react',
+            'react-dom',
+            'react-router-dom',
+          ],
+          'queries': [
+            '@tanstack/react-query',
+          ],
+          'ui-libs': [
+            '@headlessui/react',
+            'lucide-react',
+            'react-icons',
+            'react-modal',
+          ],
+          'forms': [
+            'formik',
+            'yup',
+            'react-phone-input-2',
+            'react-phone-number-input',
+          ],
+        },
+      },
+    },
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000,
+    // Tree-shake unused code
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+  // Optimize CSS
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+      },
+    },
+  },
 })

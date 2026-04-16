@@ -8,6 +8,8 @@
 
 @import "@fontsource-variable/geist";
 
+@import "./styles/mobile-optimization.css";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -200,6 +202,7 @@ button:focus-visible {
   z-index: 999;
   overflow-y: hidden;
   backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
 }
 
 .modal-overlay.open {
@@ -228,8 +231,10 @@ button:focus-visible {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100dvh;
   min-height: 100vh;
   padding: 20px;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 
 .auth-form {

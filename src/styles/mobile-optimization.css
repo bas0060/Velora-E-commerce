@@ -1,0 +1,97 @@
+/**
+ * Mobile-First CSS Optimization
+ * Reduces layout shift and improves rendering on mobile devices
+ */
+
+/* Prevent layout shift from scrollbar appearance */
+html {
+  overflow-y: scroll;
+}
+
+/* Optimize text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent flash of unstyled text (FOUT) */
+@font-face {
+  font-display: swap;
+}
+
+/* Optimize images for mobile */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent double tap zoom on mobile buttons */
+button, a, input {
+  -webkit-touch-callout: none;
+}
+
+/* Improve mobile input experience */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+textarea {
+  font-size: 16px; /* Prevents zoom on iOS */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Optimize transitions for 60fps */
+.transition-gpu {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce motion for users with reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile-specific viewport bug fixes */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+}
+
+/* Fix mobile 100vh issues on iOS */
+@media (max-height: 600px) {
+  .min-h-screen {
+    min-height: auto;
+  }
+}
+
+/* Optimize modal backdrop on mobile */
+@media (max-width: 640px) {
+  .modal-overlay {
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+  }
+}
+
+/* Performance: Lazy render off-screen content */
+.lazy-render {
+  content-visibility: auto;
+}
+
+/* Fix hamburger menu interaction on iOS */
+[role="button"] {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
