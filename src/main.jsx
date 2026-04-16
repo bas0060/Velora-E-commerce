@@ -14,7 +14,18 @@ import { initVitalsMonitoring, sendMetricToAnalytics } from "@/lib/web-vitals";
 // Initialize web vitals monitoring
 initVitalsMonitoring(sendMetricToAnalytics);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      cacheTime: 1000 * 60 * 10,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retry: 1,
+      keepPreviousData: true,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
