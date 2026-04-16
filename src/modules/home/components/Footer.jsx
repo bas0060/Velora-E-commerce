@@ -30,10 +30,18 @@ const Footer = () => {
                 </div>
                 <p className="text-[#00000099] text-[.875rem]">We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
                 <div className="flex items-center gap-x-2">
-                    <img src={fb} alt="" className="cursor-pointer" /> 
-                    <img src={x} alt="" className="cursor-pointer" />
-                    <img src={ig} alt="" className="cursor-pointer" />
-                    <img src={github} alt="" className="cursor-pointer" />
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Velora on Facebook">
+                      <img src={fb} alt="Facebook" className="cursor-pointer hover:opacity-75 transition-opacity" /> 
+                    </a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Velora on Twitter">
+                      <img src={x} alt="Twitter" className="cursor-pointer hover:opacity-75 transition-opacity" />
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Velora on Instagram">
+                      <img src={ig} alt="Instagram" className="cursor-pointer hover:opacity-75 transition-opacity" />
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Velora on GitHub">
+                      <img src={github} alt="GitHub" className="cursor-pointer hover:opacity-75 transition-opacity" />
+                    </a>
                 </div>
             </div>
             <div className="flex flex-col gap-y-5 md:flex-row items-center justify-between w-full md:gap-40 lg:gap-x-60 lg:w-[80%]">
@@ -114,11 +122,11 @@ const Footer = () => {
         <hr className='text-gray-300 lg:pt-5'/>
         <div className="flex flex-col gap-y-2 md:flex-row items-center justify-between">
             <div className="flex items-center gap-x-2">
-                <img src={visa} alt="" className="" />
-                <img src={masterCard} alt="" className="" />
-                <img src={paypal} alt="" className="" />
-                <img src={googlePay} alt="" className="" />
-                <img src={applePay} alt="" className="" />
+                <img src={visa} alt="Visa accepted" className="hover:opacity-75 transition-opacity" />
+                <img src={masterCard} alt="Mastercard accepted" className="hover:opacity-75 transition-opacity" />
+                <img src={paypal} alt="PayPal accepted" className="hover:opacity-75 transition-opacity" />
+                <img src={googlePay} alt="Google Pay accepted" className="hover:opacity-75 transition-opacity" />
+                <img src={applePay} alt="Apple Pay accepted" className="hover:opacity-75 transition-opacity" />
             </div>
             <p className="text-[#00000099] text-[.875rem]">Velora © 2000-2023, All Rights Reserved</p>
         </div>

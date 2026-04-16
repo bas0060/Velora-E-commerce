@@ -9,6 +9,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { initVitalsMonitoring, sendMetricToAnalytics } from "@/lib/web-vitals";
+
+// Initialize web vitals monitoring
+initVitalsMonitoring(sendMetricToAnalytics);
 
 const queryClient = new QueryClient();
 
