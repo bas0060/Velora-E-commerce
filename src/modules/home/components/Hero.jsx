@@ -35,7 +35,7 @@ const Hero = () => {
                         </div>
                     </div>
                     <div className=" md:h-full">
-                        <img src={shopWoman} alt="heroImg" className=" h-72 md:h-108 lg:h-[80%] object-cover" />
+                        <img src={shopWoman} alt="hero image showing women fashion" loading="lazy" decoding="async" className=" h-72 md:h-108 lg:h-[80%] object-cover" />
                     </div>
                 </div>
             </div>

@@ -50,6 +50,8 @@ const ProductCard = ({ product, showDelete = false }) => {
         <img
           src={product?.images?.[0]}
           alt={product?.name}
+          loading="lazy"
+          decoding="async"
           className="pl-8 w-48 h-60 aspect-square object-contain p-6"
         />
 

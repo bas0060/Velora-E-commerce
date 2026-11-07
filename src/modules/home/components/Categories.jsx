@@ -17,12 +17,21 @@ const Categories = () => {
   const [sectionRef, shouldLoad] = useLazySectionLoad({ rootMargin: '300px', threshold: 0.15 });
 
   const filters = useMemo(
-    () => ({ category: selectedCategoryId }),
+    () => ({ category: selectedCategoryId, page: 1, size: 8 }),
     [selectedCategoryId]
   );
 
   const { data: categories } = useGetCategories({ enabled: shouldLoad });
-  const { data: products } = useGetProducts(filters, { enabled: shouldLoad });
+  const { data: products, isLoading: isProductsLoading } = useGetProducts(filters, {
+    enabled: shouldLoad && Boolean(selectedCategoryId),
+  });
+
+  useEffect(() => {
+    const firstCategory = categories?.documents?.[0]?._id || categories?.documents?.[0]?.id;
+    if (!selectedCategoryId && firstCategory) {
+      setSelectedCategoryId(firstCategory);
+    }
+  }, [categories, selectedCategoryId]);
 
   // Normalise products into a simple array
   const items = products?.documents || [];
@@ -114,7 +123,7 @@ const Categories = () => {
               </div>
             )}
 
-            {!shouldLoad ? (
+            {!shouldLoad || isProductsLoading ? (
               <div className="py-10">
                 <SkeletonLoader lines={5} className="w-full" />
               </div>

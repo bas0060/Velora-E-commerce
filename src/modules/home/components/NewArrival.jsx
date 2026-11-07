@@ -2,7 +2,7 @@
 import React from "react";
 import ProductCard from "@/modules/home/components/ProductCard";
 import chevLeft from "@/assets/icons/chevronLeft.svg";
-import chevRight from "@/assets/icons/chevronRight.svg";
+import chevRight from "@/assets/icons/chevronRight.svg"; 
 import Carousel from "@/modules/home/components/ui/Carousel";
 import { useGetNewProducts } from "../api/use-get-new-arrival";
 import { useLazySectionLoad } from "@/lib/useLazySectionLoad";
@@ -11,13 +11,13 @@ import { SkeletonLoader } from "@/components/Loading";
 const NewArrival = () => {
   const [sectionRef, shouldLoad] = useLazySectionLoad({ rootMargin: '300px', threshold: 0.15 });
 
-  // const filters = {};
-  const { data: newProducts } = useGetNewProducts({}, { enabled: shouldLoad });
+  const { data: newProducts, isLoading: isNewProductsLoading } = useGetNewProducts(
+    { page: 1, size: 8 },
+    { enabled: shouldLoad }
+  );
 
   // Normalise data: support both { documents: [] } or straight []
   const items = newProducts?.documents || newProducts || [];
-
-  if (!items || items.length === 0) return null;
   const headingLabel = "All Products";
 
   return (
@@ -39,7 +39,7 @@ const NewArrival = () => {
         </div>
 
         {/* Carousel handles scrolling + chevrons */}
-        {!shouldLoad ? (
+        {(!shouldLoad || isNewProductsLoading || items.length === 0) ? (
           <div className="py-10">
             <SkeletonLoader lines={4} className="w-full" />
           </div>
